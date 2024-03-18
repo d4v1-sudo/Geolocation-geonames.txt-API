@@ -42,3 +42,5 @@ Users can utilize this script to find the coordinates of a specific country (it 
 Feel free to contribute to this project by adding new features, fixing bugs, improving documentation, or addressing issues. Your contributions are highly appreciated!
 
 If you have any questions or suggestions, please don't hesitate to reach out. Thank you for using Geographic Location Finder!
+
+<a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fd4v1-sudo%2FGeolocation-geonames.txt-API"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fd4v1-sudo%2FGeolocation-geonames.txt-API&label=Thanks%20for%20dropping%20in&countColor=%23d9e3f0" /></a>
