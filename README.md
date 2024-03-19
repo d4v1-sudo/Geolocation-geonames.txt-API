@@ -24,6 +24,10 @@ This script enables users to find the coordinates of a specific state based on i
 
 Users can utilize this script to find the coordinates of a specific country (it makes more sense using allCountries.txt of Geonames).
 
+### all.py
+
+To search for anything in the database, use the following input format: `<x,y>` for coordinates or `<any-string>` for a string. If you search for a coordinate, the script will retrieve the nearest coordinate's location and its information. If the search is for a string, the script will retrieve all locations and their information from the database that contain this string.
+
 ## Usage
 
 1. Ensure that you have Python installed on your system.
