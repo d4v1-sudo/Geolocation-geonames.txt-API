@@ -31,7 +31,7 @@ def find_location_by_city(locations, city):
     return None
 
 if __name__ == "__main__":
-    file_path = 'CHANGE_FOR_YOUR_GEONAME_TXT_FILE.txt'
+    file_path = input("Geonames Database file location: ")
     locations = process_geonames_file(file_path)
 
     state = input("\033[92mEnter state name: \033[0m")
