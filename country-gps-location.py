@@ -16,7 +16,7 @@ def find_location_with_pcli(locations, country):
     return None
 
 if __name__ == "__main__":
-    file_path = 'CHANGE_FOR_YOUR_GEONAME_TXT_FILE.txt'
+    file_path = input("Geonames Database file location: ")
     locations = process_geonames_file(file_path)
 
     user_country = input("Enter country name: ")
