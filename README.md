@@ -45,6 +45,6 @@ To search for anything in the database, use the following input format: `<x,y>` 
 
 Feel free to contribute to this project by adding new features, fixing bugs, improving documentation, or addressing issues. Your contributions are highly appreciated!
 
-If you have any questions or suggestions, please don't hesitate to reach out. Thank you for using Geographic Location Finder!
+If you have any questions or suggestions, please don't hesitate to reach out.
 
 <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fd4v1-sudo%2FGeolocation-geonames.txt-API"><img src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fd4v1-sudo%2FGeolocation-geonames.txt-API&label=Thanks%20for%20dropping%20in&labelColor=%23000000&countColor=%23FFFFFF" /></a>
