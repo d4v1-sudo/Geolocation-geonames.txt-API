@@ -159,7 +159,6 @@ if __name__ == "__main__":
     else:
         def new_find_nearest_location(locations, search_input):
             matching_locations = []
-            process_geonames_file(search_input, file_path)
             
             for loc in locations:
                 loc_lat, loc_lon, country, state_code, region, region_code, road, city = loc
