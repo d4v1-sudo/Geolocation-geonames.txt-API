@@ -114,7 +114,7 @@ def find_nearest_location(locations, search_input):
     return (nearest_location, min_distance), (nearest_ppl_location, ppl_distance), (nearest_road_location, road_distance), (nearest_mountain_location, mountain_distance), (nearest_lake_location, lake_distance), (nearest_park_location, park_distance), (nearest_building_location, building_distance), state_name, is_coordinate
 
 if __name__ == "__main__":
-    file_path = input("Txt file: ")
+    file_path = input("Geonames database txt file: ")
     locations = process_geonames_file(file_path)
 
     print("Please input geographic coordinates in decimal format or a place name.")
