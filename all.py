@@ -1,6 +1,6 @@
 import math
 
-def process_geonames_file(file_path):
+def process_geonames_file(search_input, file_path):
     locations = []
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
@@ -9,7 +9,10 @@ def process_geonames_file(file_path):
             longitude = float(data[5])
             country = data[8]
             state = data[10]
-            city = data[1] + ", " + data[2] + ", " + data[3]
+            if "," in search_input:
+                city = data[1]
+            else:
+                city = data[1] + ", " + data[2] + ", " + data[3]
             region = data[7]
             region_code = data[6]
             road = data[9]
@@ -114,16 +117,16 @@ def find_nearest_location(locations, search_input):
     return (nearest_location, min_distance), (nearest_ppl_location, ppl_distance), (nearest_road_location, road_distance), (nearest_mountain_location, mountain_distance), (nearest_lake_location, lake_distance), (nearest_park_location, park_distance), (nearest_building_location, building_distance), state_name, is_coordinate
 
 if __name__ == "__main__":
-    file_path = input("Geonames database txt file: ")
-    locations = process_geonames_file(file_path)
+    file_path = input("Text file: ")
 
-    print("Please input geographic coordinates in decimal format or a place name.")
+    print("Please input geographical coordinates in decimal format or the name of a place.")
     print("For latitude, positive numbers indicate north, and negative numbers indicate south.")
     print("For longitude, positive numbers indicate east, and negative numbers indicate west.")
     print("Example: Latitude 40.7128, Longitude -74.0060")
     print("\r")
 
-    search_input = input("\033[92mEnter latitude and longitude separated by comma or a place name: \033[0m")
+    search_input = input("\033[92mEnter latitude and longitude separated by comma or the name of a place: \033[0m")
+    locations = process_geonames_file(search_input, file_path)
 
     nearest_location, nearest_ppl_location, nearest_road_location, nearest_mountain_location, nearest_lake_location, nearest_park_location, nearest_building_location, state_name, is_coordinate = find_nearest_location(locations, search_input)
 
@@ -145,7 +148,7 @@ if __name__ == "__main__":
         print("Nearest park:", nearest_park_location[0][-1])
         print("Nearest building:", nearest_building_location[0][-1])
         print("\r")
-        print("\033[94mDistances from your provided point to places:\033[0m")
+        print("\033[94mDistances between your provided point and places:\033[0m")
         print("Distance to found coordinate:", round(nearest_location[1], 2), "km")
         print("Distance to nearest populated place:", round(nearest_ppl_location[1], 2), "km")
         print("Distance to nearest road/railway:", round(nearest_road_location[1], 2), "km")
@@ -156,7 +159,7 @@ if __name__ == "__main__":
     else:
         def new_find_nearest_location(locations, search_input):
             matching_locations = []
-            process_geonames_file(file_path)
+            process_geonames_file(search_input, file_path)
             
             for loc in locations:
                 loc_lat, loc_lon, country, state_code, region, region_code, road, city = loc
@@ -176,7 +179,7 @@ if __name__ == "__main__":
         if matching_locations:
             from all_states_code import all_states
             print("\r")
-            print("Found coordinates:")
+            print("Coordinates found:")
             for loc in matching_locations:
                 loc_lat, loc_lon, country, state, region, region_code, road, city = loc
                 state_name = None
@@ -198,7 +201,7 @@ if __name__ == "__main__":
                     elif region_code.lower() == "r":
                         location_var = "Road, railway:"
                     elif region_code.lower() == "s":
-                        location_var = "Spot, building, farm:"
+                        location_var = "Point, building, farm:"
                     elif region_code.lower() == "t":
                         location_var = "Mountain, hill, rock:"
                     elif region_code.lower() == "u":
@@ -217,4 +220,4 @@ if __name__ == "__main__":
                 except:
                     print("Error finding information for this location.")
         else:
-            print("No locations found.")
+            print("No location found.")
