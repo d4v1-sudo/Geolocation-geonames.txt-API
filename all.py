@@ -9,16 +9,15 @@ def process_geonames_file(file_path):
             longitude = float(data[5])
             country = data[8]
             state = data[10]
-            city = data[1]
+            city = data[1] + ", " + data[2] + ", " + data[3]
             region = data[7]
             region_code = data[6]
-            region_ori = data[7]
             road = data[9]
-            locations.append((latitude, longitude, country, state, region, region_code, region_ori, road, city))  
+            locations.append((latitude, longitude, country, state, region, region_code, road, city))  
     return locations
 
 def haversine(lat1, lon1, lat2, lon2):
-    R = 6371  # Earth radius
+    R = 6371  # Earth radius in kilometers
     lat1 = math.radians(lat1)
     lon1 = math.radians(lon1)
     lat2 = math.radians(lat2)
@@ -32,6 +31,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def find_nearest_location(locations, search_input):
     if "," in search_input:
+        # If the input contains a comma, assume it's in the format "latitude,longitude"
         latitude, longitude = map(float, search_input.split(","))
         is_coordinate = True
     else:
@@ -59,10 +59,10 @@ def find_nearest_location(locations, search_input):
     try:
         from all_states_code import all_states
     except:
-        print("\033[91mError finding all_states_code.py, run get_all_states_codes.py\033[0m")
+        print("\033[91mError finding all_states_code.py, run get_all_states-codes.py\033[0m")
 
     for loc in locations:
-        loc_lat, loc_lon, country, state_code, region, region_code, region_ori, road, city = loc
+        loc_lat, loc_lon, country, state_code, region, region_code, road, city = loc
 
         if is_coordinate:
             distance = haversine(latitude, longitude, loc_lat, loc_lon)
@@ -71,10 +71,9 @@ def find_nearest_location(locations, search_input):
                 place_name in state_code.lower() or
                 place_name in region.lower() or
                 place_name in region_code.lower() or
-                place_name in region_ori.lower() or
                 place_name in road.lower() or
                 place_name in city.lower()):
-                distance = 0  # Set distance to 0 to indicate a match
+                distance = 0
             else:
                 distance = None
 
@@ -83,7 +82,7 @@ def find_nearest_location(locations, search_input):
                 if distance < min_distance:
                     min_distance = distance
                     nearest_location = loc
-            elif region_ori.lower().startswith("ppl") and distance < ppl_distance:
+            elif region.lower().startswith("ppl") and distance < ppl_distance:
                 ppl_distance = distance
                 nearest_ppl_location = loc
             elif region_code.lower() == "r" and distance < road_distance:
@@ -103,9 +102,9 @@ def find_nearest_location(locations, search_input):
                 nearest_building_location = loc
                 
     if nearest_ppl_location:
-        loc_lat, loc_lon, country, state_code, region, region_code, region_ori, road, city = nearest_ppl_location
+        loc_lat, loc_lon, country, state_code, region, region_code, road, city = nearest_ppl_location
         populated = city
-
+        
     state_name = None
     for state_info in all_states:
         if state_info[3] == state_code:
@@ -115,58 +114,57 @@ def find_nearest_location(locations, search_input):
     return (nearest_location, min_distance), (nearest_ppl_location, ppl_distance), (nearest_road_location, road_distance), (nearest_mountain_location, mountain_distance), (nearest_lake_location, lake_distance), (nearest_park_location, park_distance), (nearest_building_location, building_distance), state_name, is_coordinate
 
 if __name__ == "__main__":
-    file_path = input("Geonames Database file location: ")
+    file_path = input("Txt file: ")
     locations = process_geonames_file(file_path)
 
-    print("Please input geographical coordinates in decimal format or the name of a place.")
+    print("Please input geographic coordinates in decimal format or a place name.")
     print("For latitude, positive numbers indicate north, and negative numbers indicate south.")
     print("For longitude, positive numbers indicate east, and negative numbers indicate west.")
     print("Example: Latitude 40.7128, Longitude -74.0060")
     print("\r")
 
-    search_input = input("\033[92mEnter latitude and longitude separated by comma or the name of a place: \033[0m")
+    search_input = input("\033[92mEnter latitude and longitude separated by comma or a place name: \033[0m")
 
     nearest_location, nearest_ppl_location, nearest_road_location, nearest_mountain_location, nearest_lake_location, nearest_park_location, nearest_building_location, state_name, is_coordinate = find_nearest_location(locations, search_input)
 
     if is_coordinate:
-        loc_lat, loc_lon, country, state, region, region_code, region_ori, road, city = nearest_location[0]
+        loc_lat, loc_lon, country, state, region, region_code, road, city = nearest_location[0]
         print("\r")
-        print("\033[94mClosest coordinates found:\033[0m")
+        print("\033[94mNearest coordinates found:\033[0m")
         print("Latitude:", loc_lat)
         print("Longitude:", loc_lon)
         print("Country:", country)
         print("State:", state_name)
         print("City:", city)
         print("\r")
-        print("\033[94mClosest points found from your provided point:\033[0m")
+        print("\033[94mNearest points found from your provided point:\033[0m")
         print("Nearest populated place:", nearest_ppl_location[0][-1])
         print("Nearest road/railway:", nearest_road_location[0][-1])
-        print("Nearest hill/mountain:", nearest_mountain_location[0][-1])
+        print("Nearest hill/rock/mountain:", nearest_mountain_location[0][-1])
         print("Nearest lake:", nearest_lake_location[0][-1])
         print("Nearest park:", nearest_park_location[0][-1])
         print("Nearest building:", nearest_building_location[0][-1])
         print("\r")
-        print("\033[94mDistances between your provided point and places:\033[0m")
+        print("\033[94mDistances from your provided point to places:\033[0m")
         print("Distance to found coordinate:", round(nearest_location[1], 2), "km")
         print("Distance to nearest populated place:", round(nearest_ppl_location[1], 2), "km")
         print("Distance to nearest road/railway:", round(nearest_road_location[1], 2), "km")
-        print("Distance to nearest hill/mountain:", round(nearest_mountain_location[1], 2), "km")
+        print("Distance to nearest hill/rock/mountain:", round(nearest_mountain_location[1], 2), "km")
         print("Distance to nearest lake:", round(nearest_lake_location[1], 2), "km")
         print("Distance to nearest park:", round(nearest_park_location[1], 2), "km")
         print("Distance to nearest building:", round(nearest_building_location[1], 2), "km")
     else:
         def new_find_nearest_location(locations, search_input):
             matching_locations = []
+            process_geonames_file(file_path)
             
             for loc in locations:
-                loc_lat, loc_lon, country, state_code, region, region_code, region_ori, road, city = loc
+                loc_lat, loc_lon, country, state_code, region, region_code, road, city = loc
         
-                # Check if the search term is contained in any part of the location information
                 if (search_input.lower() in country.lower() or
                     search_input.lower() in state_code.lower() or
                     search_input.lower() in region.lower() or
                     search_input.lower() in region_code.lower() or
-                    search_input.lower() in region_ori.lower() or
                     search_input.lower() in road.lower() or
                     search_input.lower() in city.lower()):
                     matching_locations.append(loc)
@@ -178,20 +176,45 @@ if __name__ == "__main__":
         if matching_locations:
             from all_states_code import all_states
             print("\r")
-            print("Coordinates found:")
+            print("Found coordinates:")
             for loc in matching_locations:
-                loc_lat, loc_lon, country, state, region, region_code, region_ori, road, city = loc
-                # Finding state name from code
+                loc_lat, loc_lon, country, state, region, region_code, road, city = loc
                 state_name = None
                 for state_info in all_states:
                     if state_info[3] == state:
                         state_name = state_info[-1]
                         break
-                print("Latitude:", loc_lat)
-                print("Longitude:", loc_lon)
-                print("Country:", country)
-                print("State:", state_name)
-                print("City:", city)
-                print("\r")
+
+                try:
+                    location_var = ""
+                    if region_code.lower() == "a":
+                        location_var = "Country, state, region:"
+                    elif region_code.lower() == "h":
+                        location_var = "Stream, lake, river:"
+                    elif region_code.lower() == "l":
+                        location_var = "Park, area:"
+                    elif region_code.lower() == "p":
+                        location_var = "City, village:"
+                    elif region_code.lower() == "r":
+                        location_var = "Road, railway:"
+                    elif region_code.lower() == "s":
+                        location_var = "Spot, building, farm:"
+                    elif region_code.lower() == "t":
+                        location_var = "Mountain, hill, rock:"
+                    elif region_code.lower() == "u":
+                        location_var = "Sea: "
+                    elif region_code.lower() == "v":
+                        location_var = "Forest:"
+                    else:
+                        location_var = None
+                
+                    print("Latitude:", loc_lat)
+                    print("Longitude:", loc_lon)
+                    print("Country:", country)
+                    print("State:", state_name)
+                    print(location_var , city)
+                    print("\r")
+                except:
+                    print("Error finding information for this location.")
         else:
             print("No locations found.")
