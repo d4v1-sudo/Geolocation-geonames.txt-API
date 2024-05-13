@@ -108,7 +108,7 @@ def find_nearest_location(locations, search_input):
         
     state_name = None
     for state_info in all_states:
-        if state_info == state_code:
+        if state_info[3] == state_code:
             state_name = state_info[-1]
             break
 
