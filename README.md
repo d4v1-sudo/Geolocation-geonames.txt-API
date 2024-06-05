@@ -26,7 +26,7 @@ Users can utilize this script to find the coordinates of a specific country (it 
 
 ### all.py
 
-To search for anything in the database, use the following input format: `<x,y>` for coordinates (in decimal format) or `<any-string>` for a string. If you search for a coordinate, the script will retrieve the nearest coordinate's location and its information. If the search is for a string, the script will retrieve all locations and their information from the database that contain this string.
+To search for anything in the database, use the following input format: `x,y` for coordinates (in decimal format) or `'Any string'` for a string. If you search for a coordinate, the script will retrieve the nearest coordinate's location and its information. If the search is for a string, the script will retrieve all locations and their information from the database that contain this searched string.
 
 ### convert.py
 
