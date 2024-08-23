@@ -42,7 +42,7 @@ To use it correctly:
 
 ## Usage
 
-1. Ensure that you have [Python 3.x installed on your system](python.org).
+1. Ensure that you have [Python 3.x installed on your system](https://www.python.org).
 2. Download the geonames text files from [Geonames](https://www.geonames.org/export/dump) and place them in the repository directory, and change the .txt name file for your own country .txt database in each code you will use.
 3. Run the desired Python script according to your location search requirements.
    ```python3 <file.py>```
